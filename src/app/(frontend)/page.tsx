@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
-import { Invoice } from '../components/invoice'
+import { Invoice } from '@/app/components/invoice/invoice'
 
 export default function InvoiceGeneratorPage() {
   const [preview, setPreview] = useState<string | null>(null)
