@@ -10,6 +10,11 @@ export default function InvoiceGeneratorPage() {
   const [billToAddress, setBillToAddress] = useState<string>('')
   const [shipToAddress, setShipToAddress] = useState<string>('')
   const [invoiceNumber, setInvoiceNumber] = useState<string>('')
+  const [discount, setDiscount] = useState<any>()
+  const [isDiscountPercentage, setIsDiscountPercentage] = useState<any>(false)
+  const [tax, setTax] = useState<any>()
+  const [isTaxPercentage, setIsTaxPercentage] = useState<any>(false)
+  const [shipping, setShipping] = useState<any>()
   const [ImageObjectUrl, setImageObjectUrl] = useState<string | null>(null)
   const [date, setDate] = useState<string>('')
   const [dueDate, setDueDate] = useState<string>('')
@@ -31,6 +36,22 @@ export default function InvoiceGeneratorPage() {
       tableData,
       ImageObjectUrl,
     })
+
+    const total = tableData.reduce((acc, current) => {
+      return acc + current.amount
+    }, 0)
+
+    const totalAfterDiscount =
+      isDiscountPercentage && discount > 0 ? total - (total * discount) / 100 : total - discount
+
+    const totalAfterTax =
+      isTaxPercentage && tax > 0
+        ? totalAfterDiscount + (totalAfterDiscount * tax) / 100
+        : totalAfterDiscount + tax
+
+    const totalAfterShipping = totalAfterTax + shipping
+
+    console.log(totalAfterShipping)
   }, [
     fromAddress,
     billToAddress,
@@ -40,6 +61,11 @@ export default function InvoiceGeneratorPage() {
     dueDate,
     tableData,
     ImageObjectUrl,
+    discount,
+    isDiscountPercentage,
+    tax,
+    isTaxPercentage,
+    shipping,
   ])
 
   //
@@ -304,6 +330,62 @@ export default function InvoiceGeneratorPage() {
         >
           Add Item
         </button>
+        <div>
+          <div className="flex gap-4 items-center">
+            <label htmlFor="discount">Discount</label>
+            <input
+              type="number"
+              className="border-b border-gray-400 mx-2 w-[98%] ml-auto focus:outline-none pt-5"
+              onChange={(e) => {
+                setDiscount(Number(e.target.value))
+              }}
+            />
+            <button
+              className="min-w-24 border  border-red-500/20 cursor-pointer"
+              onClick={() => {
+                setIsDiscountPercentage((prev) => {
+                  return !prev
+                })
+              }}
+            >
+              Percentage | Amount
+            </button>
+          </div>
+          <div className="flex gap-4 items-center">
+            <label htmlFor="discount">Tax</label>
+            <input
+              type="number"
+              className="border-b border-gray-400 mx-2 w-[98%] ml-auto focus:outline-none pt-5"
+              onChange={(e) => {
+                setTax(Number(e.target.value))
+              }}
+            />
+            <button
+              className="min-w-24 border  border-red-500/20 cursor-pointer"
+              onClick={() => {
+                setIsTaxPercentage((prev) => {
+                  return !prev
+                })
+              }}
+            >
+              Percentage | Amount
+            </button>
+          </div>
+          <div className="flex gap-4 items-center">
+            <label htmlFor="discount">Shipping</label>
+            <input
+              type="number"
+              className="border-b border-gray-400 mx-2 w-[98%] ml-auto focus:outline-none pt-5"
+              onChange={(e) => {
+                setShipping(Number(e.target.value))
+              }}
+            />
+          </div>
+          <div className="flex gap-4 items-center">
+            <p>Subtotal</p>
+            <p>{tableData.reduce((acc: number, item: any) => acc + item.amount, 0)}</p>
+          </div>
+        </div>
         {/* submit button */}
       </div>
       <button
