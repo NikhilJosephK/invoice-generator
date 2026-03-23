@@ -4,11 +4,15 @@ html {
   box-sizing: border-box;
 }
 
+body {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+  min-height: 100vh;
+}
+
 @theme {
   --breakpoint-xs: 320px;
   --breakpoint-sm: 480px;
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
+  --breakpoint-md: 640px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
 }
@@ -16,4 +20,9 @@ html {
 @utility container {
   margin-inline: auto;
   padding-inline: 10px;
+}
+
+/* Form input focus ring */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:ring-offset-2 focus:ring-offset-white;
 }

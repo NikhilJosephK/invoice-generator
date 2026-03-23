@@ -8,9 +8,24 @@ export function Invoice({ innerData }: { innerData: any }) {
     dueDate,
     tableData,
     ImageObjectUrl,
+    subtotal,
+    discount,
+    isDiscountPercentage,
+    tax,
+    isTaxPercentage,
+    shipping,
+    totalDue,
   } = innerData || {}
 
-  const total = tableData?.reduce((sum: number, item: any) => sum + (item.amount || 0), 0) ?? 0
+  const computedSubtotal = tableData?.reduce((sum: number, item: any) => sum + (item.amount || 0), 0) ?? 0
+  const total = subtotal ?? computedSubtotal
+  const totalAfterDiscount =
+    isDiscountPercentage && discount > 0 ? total - (total * discount) / 100 : total - (discount || 0)
+  const totalAfterTax =
+    isTaxPercentage && tax > 0
+      ? totalAfterDiscount + (totalAfterDiscount * tax) / 100
+      : totalAfterDiscount + (tax || 0)
+  const finalTotal = totalDue ?? totalAfterTax + (shipping || 0)
 
   const labelStyle: React.CSSProperties = {
     fontSize: '0.7rem',
@@ -324,6 +339,69 @@ export function Invoice({ innerData }: { innerData: any }) {
               <span>Subtotal</span>
               <span style={{ fontWeight: 500, color: '#334155' }}>${total.toFixed(2)}</span>
             </div>
+            {discount != null && discount > 0 && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '0.5rem 1rem',
+                  fontSize: '0.88rem',
+                  color: '#059669',
+                  borderBottom: '1px solid #f1f5f9',
+                }}
+              >
+                <span>Discount</span>
+                <span style={{ fontWeight: 500 }}>
+                  -
+                  $
+                  {(
+                    isDiscountPercentage && discount > 0
+                      ? (total * discount) / 100
+                      : discount
+                  ).toFixed(2)}
+                </span>
+              </div>
+            )}
+            {tax != null && tax > 0 && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '0.5rem 1rem',
+                  fontSize: '0.88rem',
+                  color: '#64748b',
+                  borderBottom: '1px solid #f1f5f9',
+                }}
+              >
+                <span>Tax</span>
+                <span style={{ fontWeight: 500, color: '#334155' }}>
+                  +
+                  $
+                  {(
+                    isTaxPercentage && tax > 0
+                      ? (totalAfterDiscount * tax) / 100
+                      : tax
+                  ).toFixed(2)}
+                </span>
+              </div>
+            )}
+            {shipping != null && shipping > 0 && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '0.5rem 1rem',
+                  fontSize: '0.88rem',
+                  color: '#64748b',
+                  borderBottom: '1px solid #f1f5f9',
+                }}
+              >
+                <span>Shipping</span>
+                <span style={{ fontWeight: 500, color: '#334155' }}>
+                  +${Number(shipping).toFixed(2)}
+                </span>
+              </div>
+            )}
             <div
               style={{
                 display: 'flex',
@@ -338,7 +416,7 @@ export function Invoice({ innerData }: { innerData: any }) {
               }}
             >
               <span>Total Due</span>
-              <span>${total.toFixed(2)}</span>
+              <span>${finalTotal.toFixed(2)}</span>
             </div>
           </div>
         </div>
