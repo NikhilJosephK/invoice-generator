@@ -327,7 +327,7 @@ export default function InvoiceGeneratorPage() {
                         }
                         type="text"
                         placeholder="Item name"
-                        className="rounded-md border-0 bg-transparent py-1.5 text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-w-[200px]"
+                        className="rounded-md  bg-transparent py-1.5 text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-w-[200px]  border border-slate-200/90 pl-2"
                       />
                       <input
                         value={item?.quantity || ''}
@@ -343,7 +343,7 @@ export default function InvoiceGeneratorPage() {
                         }}
                         type="number"
                         min={0}
-                        className="rounded-md border-0 bg-transparent py-1.5 text-center text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-w-[100px]"
+                        className="rounded-md border bg-transparent py-1.5 text-center text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-w-[100px]  border-slate-200/90"
                       />
                       <input
                         value={item?.rate || ''}
@@ -360,7 +360,7 @@ export default function InvoiceGeneratorPage() {
                         type="number"
                         min={0}
                         step={0.01}
-                        className="rounded-md border-0 bg-transparent py-1.5 text-right text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-w-[100px]"
+                        className="rounded-md bg-transparent py-1.5 text-center text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-w-[100px] border border-slate-200/90"
                       />
                       <div className="text-right font-medium text-slate-700 min-w-[100px]">
                         ${Number(item.amount).toFixed(2)}

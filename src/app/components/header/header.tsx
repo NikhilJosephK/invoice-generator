@@ -21,7 +21,7 @@ export function Header() {
           </div>
           <div className="leading-tight">
             <h1 className="text-base font-semibold tracking-tight text-slate-900 sm:text-lg md:text-xl">
-              Invoice Generator
+              InvoiceStack
             </h1>
           </div>
         </div>
