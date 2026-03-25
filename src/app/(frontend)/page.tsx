@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { Invoice } from '@/app/components/invoice/invoice'
+import { CurrencyPicker } from '../components/currency-picker/currency-picker'
 
 export default function InvoiceGeneratorPage() {
   const [preview, setPreview] = useState<string | null>(null)
@@ -23,6 +24,7 @@ export default function InvoiceGeneratorPage() {
   const [tableData, setTableData] = useState([
     { id: 0, quantity: 0, rate: 0, amount: 0, product: '' },
   ])
+  const [currencySymbol, setCurrencySymbol] = useState('')
 
   const [data, setData] = useState<any>({})
   useEffect(() => {
@@ -363,7 +365,7 @@ export default function InvoiceGeneratorPage() {
                         className="rounded-md bg-transparent py-1.5 text-center text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 min-w-[100px] border border-slate-200/90"
                       />
                       <div className="text-right font-medium text-slate-700 min-w-[100px]">
-                        ${Number(item.amount).toFixed(2)}
+                        {currencySymbol + Number(item.amount).toFixed(2)}
                       </div>
                       <button
                         type="button"
@@ -425,7 +427,7 @@ export default function InvoiceGeneratorPage() {
                             : 'text-slate-600 hover:text-slate-900'
                         }`}
                       >
-                        $ Amount
+                        {currencySymbol} Amount
                       </button>
                       <button
                         type="button"
@@ -468,7 +470,7 @@ export default function InvoiceGeneratorPage() {
                             : 'text-slate-600 hover:text-slate-900'
                         }`}
                       >
-                        $ Amount
+                        {currencySymbol} Amount
                       </button>
                       <button
                         type="button"
@@ -504,16 +506,25 @@ export default function InvoiceGeneratorPage() {
                 <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-500">
                   Summary
                 </h3>
+                <div className="mb-6">
+                  <label htmlFor="currency" className={labelBase}>
+                    Currency
+                  </label>
+                  <CurrencyPicker setCurrencySymbol={setCurrencySymbol} />
+                </div>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between text-slate-600">
                     <span>Subtotal</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>
+                      {currencySymbol}
+                      {total.toFixed(2)}
+                    </span>
                   </div>
                   {discount != null && discount > 0 && (
                     <div className="flex justify-between text-emerald-600">
                       <span>Discount</span>
                       <span>
-                        - $
+                        - {currencySymbol}
                         {(isDiscountPercentage && discount > 0
                           ? (total * discount) / 100
                           : discount
@@ -525,7 +536,7 @@ export default function InvoiceGeneratorPage() {
                     <div className="flex justify-between text-slate-600">
                       <span>Tax</span>
                       <span>
-                        + $
+                        + {currencySymbol}
                         {(isTaxPercentage && tax > 0
                           ? (totalAfterDiscount * tax) / 100
                           : tax
@@ -536,13 +547,19 @@ export default function InvoiceGeneratorPage() {
                   {shipping != null && shipping > 0 && (
                     <div className="flex justify-between text-slate-600">
                       <span>Shipping</span>
-                      <span>+${Number(shipping).toFixed(2)}</span>
+                      <span>
+                        +{currencySymbol}
+                        {Number(shipping).toFixed(2)}
+                      </span>
                     </div>
                   )}
                 </div>
                 <div className="mt-4 flex justify-between border-t border-slate-200 pt-4 text-lg font-bold text-slate-900">
                   <span>Total Due</span>
-                  <span>${totalAfterShipping.toFixed(2)}</span>
+                  <span>
+                    {currencySymbol}
+                    {totalAfterShipping.toFixed(2)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -591,6 +608,7 @@ export default function InvoiceGeneratorPage() {
                   isTaxPercentage,
                   shipping,
                   totalDue: totalAfterShipping,
+                  currencySymbol,
                 }}
               />
             </div>

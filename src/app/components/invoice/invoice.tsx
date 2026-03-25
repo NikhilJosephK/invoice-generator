@@ -15,12 +15,16 @@ export function Invoice({ innerData }: { innerData: any }) {
     isTaxPercentage,
     shipping,
     totalDue,
+    currencySymbol,
   } = innerData || {}
 
-  const computedSubtotal = tableData?.reduce((sum: number, item: any) => sum + (item.amount || 0), 0) ?? 0
+  const computedSubtotal =
+    tableData?.reduce((sum: number, item: any) => sum + (item.amount || 0), 0) ?? 0
   const total = subtotal ?? computedSubtotal
   const totalAfterDiscount =
-    isDiscountPercentage && discount > 0 ? total - (total * discount) / 100 : total - (discount || 0)
+    isDiscountPercentage && discount > 0
+      ? total - (total * discount) / 100
+      : total - (discount || 0)
   const totalAfterTax =
     isTaxPercentage && tax > 0
       ? totalAfterDiscount + (totalAfterDiscount * tax) / 100
@@ -299,7 +303,8 @@ export function Invoice({ innerData }: { innerData: any }) {
                     borderBottom: '1px solid #e2e8f0',
                   }}
                 >
-                  ${Number(item.rate).toFixed(2)}
+                  {currencySymbol}
+                  {Number(item.rate).toFixed(2)}
                 </td>
                 <td
                   style={{
@@ -310,7 +315,8 @@ export function Invoice({ innerData }: { innerData: any }) {
                     borderBottom: '1px solid #e2e8f0',
                   }}
                 >
-                  ${Number(item.amount).toFixed(2)}
+                  {currencySymbol}
+                  {Number(item.amount).toFixed(2)}
                 </td>
               </tr>
             ))}
@@ -337,7 +343,11 @@ export function Invoice({ innerData }: { innerData: any }) {
               }}
             >
               <span>Subtotal</span>
-              <span style={{ fontWeight: 500, color: '#334155' }}>${total.toFixed(2)}</span>
+              <span style={{ fontWeight: 500, color: '#334155' }}>
+                {' '}
+                {currencySymbol}
+                {total.toFixed(2)}
+              </span>
             </div>
             {discount != null && discount > 0 && (
               <div
@@ -352,12 +362,10 @@ export function Invoice({ innerData }: { innerData: any }) {
               >
                 <span>Discount</span>
                 <span style={{ fontWeight: 500 }}>
-                  -
-                  $
-                  {(
-                    isDiscountPercentage && discount > 0
-                      ? (total * discount) / 100
-                      : discount
+                  - {currencySymbol}
+                  {(isDiscountPercentage && discount > 0
+                    ? (total * discount) / 100
+                    : discount
                   ).toFixed(2)}
                 </span>
               </div>
@@ -375,13 +383,8 @@ export function Invoice({ innerData }: { innerData: any }) {
               >
                 <span>Tax</span>
                 <span style={{ fontWeight: 500, color: '#334155' }}>
-                  +
-                  $
-                  {(
-                    isTaxPercentage && tax > 0
-                      ? (totalAfterDiscount * tax) / 100
-                      : tax
-                  ).toFixed(2)}
+                  + {currencySymbol}
+                  {(isTaxPercentage && tax > 0 ? (totalAfterDiscount * tax) / 100 : tax).toFixed(2)}
                 </span>
               </div>
             )}
@@ -398,7 +401,8 @@ export function Invoice({ innerData }: { innerData: any }) {
               >
                 <span>Shipping</span>
                 <span style={{ fontWeight: 500, color: '#334155' }}>
-                  +${Number(shipping).toFixed(2)}
+                  + {currencySymbol}
+                  {Number(shipping).toFixed(2)}
                 </span>
               </div>
             )}
@@ -416,7 +420,11 @@ export function Invoice({ innerData }: { innerData: any }) {
               }}
             >
               <span>Total Due</span>
-              <span>${finalTotal.toFixed(2)}</span>
+              <span>
+                {' '}
+                {currencySymbol}
+                {finalTotal.toFixed(2)}
+              </span>
             </div>
           </div>
         </div>
