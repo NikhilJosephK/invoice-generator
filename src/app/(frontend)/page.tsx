@@ -17,9 +17,13 @@ export default function InvoiceGeneratorPage() {
   const [isTaxPercentage, setIsTaxPercentage] = useState<any>(false)
   const [shipping, setShipping] = useState<any>()
   const [ImageObjectUrl, setImageObjectUrl] = useState<string | null>(null)
+  const [signaturePreview, setSignaturePreview] = useState<string | null>(null)
+  const [signatureObjectUrl, setSignatureObjectUrl] = useState<string | null>(null)
   const [date, setDate] = useState<string>('')
   const [dueDate, setDueDate] = useState<string>('')
+  const [note, setNote] = useState<string>('')
   const imageUploadRef = useRef(null)
+  const signatureUploadRef = useRef(null)
   const numberOfItemRef = useRef(0)
   const [tableData, setTableData] = useState([
     { id: 0, quantity: 0, rate: 0, amount: 0, product: '' },
@@ -37,6 +41,8 @@ export default function InvoiceGeneratorPage() {
       dueDate,
       tableData,
       ImageObjectUrl,
+      signatureObjectUrl,
+      note,
     })
   }, [
     fromAddress,
@@ -47,6 +53,8 @@ export default function InvoiceGeneratorPage() {
     dueDate,
     tableData,
     ImageObjectUrl,
+    signatureObjectUrl,
+    note,
     discount,
     isDiscountPercentage,
     tax,
@@ -555,7 +563,7 @@ export default function InvoiceGeneratorPage() {
                   )}
                 </div>
                 <div className="mt-4 flex justify-between border-t border-slate-200 pt-4 text-lg font-bold text-slate-900">
-                  <span>Total Due</span>
+                  <span>Total</span>
                   <span>
                     {currencySymbol}
                     {totalAfterShipping.toFixed(2)}
@@ -565,7 +573,90 @@ export default function InvoiceGeneratorPage() {
             </div>
           </div>
 
-          {/* Submit / Download PDF */}
+          {/* Note */}
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm shadow-slate-200/50 sm:p-8">
+            <label htmlFor="note" className={labelBase}>
+              Note
+            </label>
+            <textarea
+              id="note"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              className={`${inputBase} h-[200px] min-h-[200px] w-full resize-y`}
+              placeholder="Payment terms, thank-you message, or other details for your client"
+              rows={6}
+            />
+          </div>
+
+          {/* Signature */}
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm shadow-slate-200/50 sm:p-8">
+            <label className={labelBase}>Signature</label>
+            {!signaturePreview ? (
+              <button
+                type="button"
+                onClick={() =>
+                  (signatureUploadRef.current as unknown as HTMLInputElement)?.click()
+                }
+                className="flex h-32 w-full items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50/50 text-slate-500 transition-colors hover:border-indigo-300 hover:bg-indigo-50/30 hover:text-indigo-600"
+              >
+                <span className="text-sm font-medium">+ Upload signature</span>
+              </button>
+            ) : (
+              <div className="relative inline-block max-w-full">
+                <Image
+                  src={signaturePreview}
+                  id="signature-preview"
+                  width={220}
+                  height={100}
+                  alt="Signature preview"
+                  className="max-h-[100px] w-auto rounded-lg border border-slate-200 object-contain"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (signaturePreview) URL.revokeObjectURL(signaturePreview)
+                    setSignaturePreview(null)
+                    setSignatureObjectUrl(null)
+                  }}
+                  className="absolute -right-2 -top-2 rounded-full bg-slate-800 p-1 text-white shadow hover:bg-slate-700"
+                  aria-label="Remove signature"
+                >
+                  <svg
+                    className="h-3 w-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
+            <input
+              type="file"
+              id="signature"
+              accept="image/*"
+              ref={signatureUploadRef}
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (!file) return
+                if (signaturePreview) URL.revokeObjectURL(signaturePreview)
+                setSignaturePreview(URL.createObjectURL(file))
+                const reader = new FileReader()
+                reader.onloadend = () => setSignatureObjectUrl(reader.result as string)
+                reader.readAsDataURL(file)
+                e.target.value = ''
+              }}
+              className="sr-only"
+            />
+          </div>
+
+          {/* Submit / Download PDF button */}
           <div className="flex max-lg:flex-col items-center gap-4 justify-center">
             <button
               type="button"

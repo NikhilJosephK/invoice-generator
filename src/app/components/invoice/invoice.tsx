@@ -8,6 +8,7 @@ export function Invoice({ innerData }: { innerData: any }) {
     dueDate,
     tableData,
     ImageObjectUrl,
+    signatureObjectUrl,
     subtotal,
     discount,
     isDiscountPercentage,
@@ -16,6 +17,7 @@ export function Invoice({ innerData }: { innerData: any }) {
     shipping,
     totalDue,
     currencySymbol,
+    note,
   } = innerData || {}
 
   const computedSubtotal =
@@ -419,7 +421,7 @@ export function Invoice({ innerData }: { innerData: any }) {
                 borderRadius: '8px',
               }}
             >
-              <span>Total Due</span>
+              <span>Total</span>
               <span>
                 {' '}
                 {currencySymbol}
@@ -428,6 +430,42 @@ export function Invoice({ innerData }: { innerData: any }) {
             </div>
           </div>
         </div>
+
+        {note?.trim() ? (
+          <div
+            style={{
+              marginTop: '2rem',
+              paddingTop: '1.5rem',
+              borderTop: '1px solid #e2e8f0',
+            }}
+          >
+            <p style={labelStyle}>Note</p>
+            <p style={addressStyle}>{note}</p>
+          </div>
+        ) : null}
+
+        {signatureObjectUrl ? (
+          <div
+            style={{
+              marginTop: note?.trim() ? '1.5rem' : '2rem',
+              paddingTop: note?.trim() ? 0 : '1.5rem',
+              borderTop: note?.trim() ? 'none' : '1px solid #e2e8f0',
+            }}
+          >
+            <p style={labelStyle}>Signature</p>
+            <img
+              src={signatureObjectUrl}
+              alt="Signature"
+              style={{
+                maxWidth: '220px',
+                maxHeight: '100px',
+                objectFit: 'contain',
+                display: 'block',
+                marginTop: '8px',
+              }}
+            />
+          </div>
+        ) : null}
 
         {/* Footer */}
         <div
