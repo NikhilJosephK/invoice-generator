@@ -26,7 +26,16 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const documentHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><style>html,body{margin:0;padding:0;}</style></head><body>${html}</body></html>`
+  // A4 is 210mm wide. Invoice markup uses maxWidth 780px (~206mm), which is wider than the printable
+  // area once PDF margins apply, so Chromium clips the right side and the right border disappears.
+  const pdfMarginMm = 8
+  const pdfContentWidthMm = 210 - pdfMarginMm * 2
+
+  const documentHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><style>
+html,body{margin:0;padding:0;}
+.pdf-root{box-sizing:border-box;width:${pdfContentWidthMm}mm;max-width:100%;margin:0 auto;}
+.pdf-root > *{box-sizing:border-box;max-width:100% !important;}
+</style></head><body><div class="pdf-root">${html}</div></body></html>`
 
   let browser
 
@@ -53,11 +62,12 @@ export async function POST(request: NextRequest) {
     const page = await browser.newPage()
     await page.setContent(documentHtml, { waitUntil: 'load' })
 
+    const marginCss = `${pdfMarginMm}mm`
     const pdf = await page.pdf({
       path: undefined,
       printBackground: true,
       format: 'A4',
-      margin: { top: '8mm', right: '8mm', bottom: '8mm', left: '8mm' },
+      margin: { top: marginCss, right: marginCss, bottom: marginCss, left: marginCss },
     })
     return new NextResponse(Buffer.from(pdf), {
       headers: {

@@ -1,4 +1,4 @@
-export function Invoice({ innerData }: { innerData: any }) {
+export function Invoice({ innerData }: { innerData?: any }) {
   const {
     fromAddress,
     billToAddress,
