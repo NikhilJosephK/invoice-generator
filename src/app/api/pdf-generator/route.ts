@@ -6,6 +6,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json()
   const htmlParam: string | undefined = body?.html
   const signatureDataUrl: string | undefined = body?.signatureDataUrl
+  const qrCodeDataUrl: string | undefined = body?.qrCodeDataUrl
 
   if (!htmlParam) {
     return new NextResponse('Please provide the HTML.', { status: 400 })
@@ -16,6 +17,12 @@ export async function POST(request: NextRequest) {
     const marker = signatureDataUrl.slice(0, 48)
     if (!html.includes(marker)) {
       html += `<div style="margin-top:10px;padding-top:8px;border-top:1px solid #e2e8f0"><p style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;margin:0 0 4px 0">Signature</p><img src="${signatureDataUrl.replace(/"/g, '&quot;')}" alt="Signature" style="max-width:180px;max-height:72px;object-fit:contain;display:block" /></div>`
+    }
+  }
+  if (qrCodeDataUrl && typeof qrCodeDataUrl === 'string' && qrCodeDataUrl.startsWith('data:image')) {
+    const marker = qrCodeDataUrl.slice(0, 48)
+    if (!html.includes(marker)) {
+      html += `<div style="margin-top:10px;padding-top:8px;border-top:1px solid #e2e8f0;text-align:right"><p style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;margin:0 0 4px 0;text-align:right">QR Code</p><img src="${qrCodeDataUrl.replace(/"/g, '&quot;')}" alt="QR Code" style="max-width:180px;max-height:72px;object-fit:contain;display:block;margin-left:auto" /></div>`
     }
   }
 

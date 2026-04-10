@@ -9,6 +9,7 @@ export function Invoice({ innerData }: { innerData: any }) {
     tableData,
     ImageObjectUrl,
     signatureObjectUrl,
+    qrCodeObjectUrl,
     subtotal,
     discount,
     isDiscountPercentage,
@@ -445,7 +446,7 @@ export function Invoice({ innerData }: { innerData: any }) {
           </div>
         ) : null}
 
-        {signatureObjectUrl ? (
+        {signatureObjectUrl || qrCodeObjectUrl ? (
           <div
             style={{
               marginTop: note?.trim() ? '0.65rem' : '0.85rem',
@@ -453,18 +454,52 @@ export function Invoice({ innerData }: { innerData: any }) {
               borderTop: note?.trim() ? 'none' : '1px solid #e2e8f0',
             }}
           >
-            <p style={labelStyle}>Signature</p>
-            <img
-              src={signatureObjectUrl}
-              alt="Signature"
+            <div
               style={{
-                maxWidth: '180px',
-                maxHeight: '72px',
-                objectFit: 'contain',
-                display: 'block',
-                marginTop: '4px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                gap: '1rem',
               }}
-            />
+            >
+              <div style={{ flexShrink: 0 }}>
+                {signatureObjectUrl ? (
+                  <>
+                    <p style={labelStyle}>Signature</p>
+                    <img
+                      src={signatureObjectUrl}
+                      alt="Signature"
+                      style={{
+                        maxWidth: '180px',
+                        maxHeight: '72px',
+                        objectFit: 'contain',
+                        display: 'block',
+                        marginTop: '4px',
+                      }}
+                    />
+                  </>
+                ) : null}
+              </div>
+              <div style={{ flexShrink: 0, textAlign: 'right' }}>
+                {qrCodeObjectUrl ? (
+                  <>
+                    <p style={{ ...labelStyle, textAlign: 'right' }}>QR Code</p>
+                    <img
+                      src={qrCodeObjectUrl}
+                      alt="QR Code"
+                      style={{
+                        maxWidth: '180px',
+                        maxHeight: '72px',
+                        objectFit: 'contain',
+                        display: 'block',
+                        marginTop: '4px',
+                        marginLeft: 'auto',
+                      }}
+                    />
+                  </>
+                ) : null}
+              </div>
+            </div>
           </div>
         ) : null}
 

@@ -20,11 +20,14 @@ export default function InvoiceGeneratorPage() {
   const [ImageObjectUrl, setImageObjectUrl] = useState<string | null>(null)
   const [signaturePreview, setSignaturePreview] = useState<string | null>(null)
   const [signatureObjectUrl, setSignatureObjectUrl] = useState<string | null>(null)
+  const [qrCodePreview, setQrCodePreview] = useState<string | null>(null)
+  const [qrCodeObjectUrl, setQrCodeObjectUrl] = useState<string | null>(null)
   const [date, setDate] = useState<string>('')
   const [dueDate, setDueDate] = useState<string>('')
   const [note, setNote] = useState<string>('')
   const imageUploadRef = useRef(null)
   const signatureUploadRef = useRef(null)
+  const qrCodeUploadRef = useRef(null)
   const numberOfItemRef = useRef(0)
   const [tableData, setTableData] = useState([
     { id: 0, quantity: 0, rate: 0, amount: 0, product: '' },
@@ -44,6 +47,7 @@ export default function InvoiceGeneratorPage() {
       tableData,
       ImageObjectUrl,
       signatureObjectUrl,
+      qrCodeObjectUrl,
       note,
     })
   }, [
@@ -56,6 +60,7 @@ export default function InvoiceGeneratorPage() {
     tableData,
     ImageObjectUrl,
     signatureObjectUrl,
+    qrCodeObjectUrl,
     note,
     discount,
     isDiscountPercentage,
@@ -87,6 +92,7 @@ export default function InvoiceGeneratorPage() {
           ...(signatureObjectUrl?.startsWith('data:image')
             ? { signatureDataUrl: signatureObjectUrl }
             : {}),
+          ...(qrCodeObjectUrl?.startsWith('data:image') ? { qrCodeDataUrl: qrCodeObjectUrl } : {}),
         }),
       })
       if (!response.ok) throw new Error('Failed to create PDF.')
@@ -600,7 +606,7 @@ export default function InvoiceGeneratorPage() {
           </div>
 
           {/* Signature */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm shadow-slate-200/50 sm:p-8">
+          <div className="min-w-0 w-full rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm shadow-slate-200/50 sm:p-8">
             <label className={labelBase}>Signature</label>
             {!signaturePreview ? (
               <button
@@ -617,7 +623,7 @@ export default function InvoiceGeneratorPage() {
                   src={signaturePreview}
                   id="signature-preview"
                   alt="Signature preview"
-                  className="max-h-[100px] w-auto rounded-lg border border-slate-200 object-contain"
+                  className="max-h-[72px] max-w-[180px] rounded-lg border border-slate-200 object-contain"
                 />
                 <button
                   type="button"
@@ -673,6 +679,65 @@ export default function InvoiceGeneratorPage() {
                 setSignatureObjectUrl(dataUrl)
                 setSignaturePreview(dataUrl)
               }}
+            />
+          </div>
+          {/* QR Code */}
+          <div className="min-w-0 w-full rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm shadow-slate-200/50 sm:p-8">
+            <label className={labelBase}>QR Code</label>
+            {!qrCodePreview ? (
+              <button
+                type="button"
+                onClick={() => (qrCodeUploadRef.current as unknown as HTMLInputElement)?.click()}
+                className="flex h-32 w-full items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50/50 text-slate-500 transition-colors hover:border-indigo-300 hover:bg-indigo-50/30 hover:text-indigo-600"
+              >
+                <span className="text-sm font-medium">+ Upload QR code</span>
+              </button>
+            ) : (
+              <div className="relative inline-block max-w-full">
+                {/* eslint-disable-next-line @next/next/no-img-element -- blob and data URLs for QR */}
+                <img
+                  src={qrCodePreview}
+                  id="qr-code-preview"
+                  alt="QR code preview"
+                  className="max-h-[72px] max-w-[180px] rounded-lg border border-slate-200 object-contain"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (qrCodePreview.startsWith('blob:')) URL.revokeObjectURL(qrCodePreview)
+                    setQrCodePreview(null)
+                    setQrCodeObjectUrl(null)
+                  }}
+                  className="absolute -right-2 -top-2 rounded-full bg-slate-800 p-1 text-white shadow hover:bg-slate-700"
+                  aria-label="Remove QR code"
+                >
+                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
+            <input
+              type="file"
+              id="qr-code"
+              accept="image/*"
+              ref={qrCodeUploadRef}
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (!file) return
+                if (qrCodePreview?.startsWith('blob:')) URL.revokeObjectURL(qrCodePreview)
+                setQrCodePreview(URL.createObjectURL(file))
+                const reader = new FileReader()
+                reader.onloadend = () => setQrCodeObjectUrl(reader.result as string)
+                reader.readAsDataURL(file)
+                e.target.value = ''
+              }}
+              className="sr-only"
             />
           </div>
 
