@@ -36,9 +36,9 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
-      <body>
+      <body className="flex min-h-dvh flex-col">
         <Header />
-        <main>{children}</main>
+        <main className="flex flex-1 flex-col">{children}</main>
         <Footer />
         <Analytics />
       </body>

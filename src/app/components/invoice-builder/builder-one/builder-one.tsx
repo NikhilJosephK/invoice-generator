@@ -6,7 +6,10 @@ import { Invoice } from '@/app/components/invoice/invoice'
 import { CurrencyPicker } from '@/app/components/currency-picker/currency-picker'
 import { SignatureMaker } from '@/app/components/signature-maker/signature-maker'
 
-export default function InvoiceGeneratorComponent({ InvoiceComponent = Invoice }: any) {
+export default function InvoiceGeneratorComponent({
+  InvoiceComponent = Invoice,
+  invoiceType,
+}: any) {
   const [preview, setPreview] = useState<string | null>(null)
   const [fromAddress, setFromAddress] = useState<string>('')
   const [billToAddress, setBillToAddress] = useState<string>('')
@@ -122,7 +125,7 @@ export default function InvoiceGeneratorComponent({ InvoiceComponent = Invoice }
         {/* Page title */}
         <div className="mb-8 text-center sm:mb-12">
           <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            Create Your Invoice
+            Create Your {invoiceType} Invoice
           </h2>
           <p className="mt-2 text-sm text-slate-500 sm:text-base">
             Fill in the details below to generate a professional PDF invoice
