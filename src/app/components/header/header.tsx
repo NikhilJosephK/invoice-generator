@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-white/60 bg-white/80 backdrop-blur-xl">
@@ -7,21 +9,22 @@ export function Header() {
       </div>
 
       <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 px-4 py-3 sm:flex-row sm:justify-between sm:px-6 sm:py-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           <div className="relative">
-            <div
-              className="pointer-events-none absolute -inset-[2px] rounded-[14px] bg-conic/[from_0deg] from-indigo-400 via-violet-400 to-indigo-400 opacity-90 blur-[1px] animate-spin [animation-duration:5s]"
-              aria-hidden
-            />
-            <div className="relative grid h-9 w-9 place-items-center rounded-xl border border-indigo-100 bg-white shadow-sm shadow-indigo-200/40 ring-1 ring-indigo-100/60 sm:h-10 sm:w-10">
+            <div className="relative grid h-9 w-9 place-items-center sm:h-10 sm:w-10">
               <span className="text-base sm:text-lg" aria-hidden>
-                ✦
+                <Image
+                  src="/logo/invoice-stack-logo.svg"
+                  alt="InvoiceStack"
+                  width={32}
+                  height={32}
+                />
               </span>
             </div>
           </div>
           <div className="leading-tight">
             <h1 className="text-base font-semibold tracking-tight text-slate-900 sm:text-lg md:text-xl">
-              InvoiceStack
+              invoiceStack
             </h1>
           </div>
         </div>
