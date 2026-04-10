@@ -3,11 +3,23 @@ import puppeteer from 'puppeteer-core'
 import chromium from '@sparticuz/chromium-min'
 
 export async function POST(request: NextRequest) {
-  const { html: htmlParam } = await request.json()
+  const body = await request.json()
+  const htmlParam: string | undefined = body?.html
+  const signatureDataUrl: string | undefined = body?.signatureDataUrl
 
   if (!htmlParam) {
     return new NextResponse('Please provide the HTML.', { status: 400 })
   }
+
+  let html = htmlParam
+  if (signatureDataUrl && typeof signatureDataUrl === 'string' && signatureDataUrl.startsWith('data:image')) {
+    const marker = signatureDataUrl.slice(0, 48)
+    if (!html.includes(marker)) {
+      html += `<div style="margin-top:10px;padding-top:8px;border-top:1px solid #e2e8f0"><p style="font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;margin:0 0 4px 0">Signature</p><img src="${signatureDataUrl.replace(/"/g, '&quot;')}" alt="Signature" style="max-width:180px;max-height:72px;object-fit:contain;display:block" /></div>`
+    }
+  }
+
+  const documentHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><style>html,body{margin:0;padding:0;}</style></head><body>${html}</body></html>`
 
   let browser
 
@@ -32,11 +44,13 @@ export async function POST(request: NextRequest) {
     )
 
     const page = await browser.newPage()
-    await page.setContent(htmlParam, { waitUntil: 'load' })
+    await page.setContent(documentHtml, { waitUntil: 'load' })
 
     const pdf = await page.pdf({
       path: undefined,
       printBackground: true,
+      format: 'A4',
+      margin: { top: '8mm', right: '8mm', bottom: '8mm', left: '8mm' },
     })
     return new NextResponse(Buffer.from(pdf), {
       headers: {

@@ -34,18 +34,18 @@ export function Invoice({ innerData }: { innerData: any }) {
   const finalTotal = totalDue ?? totalAfterTax + (shipping || 0)
 
   const labelStyle: React.CSSProperties = {
-    fontSize: '0.7rem',
+    fontSize: 'calc(0.65rem + 1px)',
     fontWeight: 600,
     textTransform: 'uppercase',
     letterSpacing: '0.08em',
     color: '#94a3b8',
-    marginBottom: '4px',
+    marginBottom: '2px',
   }
 
   const addressStyle: React.CSSProperties = {
-    fontSize: '0.85rem',
+    fontSize: 'calc(0.8rem + 2px)',
     color: '#334155',
-    lineHeight: 1.6,
+    lineHeight: 1.45,
     whiteSpace: 'pre-line',
     margin: 0,
   }
@@ -56,8 +56,8 @@ export function Invoice({ innerData }: { innerData: any }) {
         style={{
           fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
           maxWidth: '780px',
-          margin: '2rem auto',
-          padding: '3rem',
+          margin: '0 auto',
+          padding: '1.25rem 1.5rem',
           backgroundColor: '#ffffff',
           color: '#1a1a1a',
           border: '1px solid #e2e8f0',
@@ -66,10 +66,10 @@ export function Invoice({ innerData }: { innerData: any }) {
         {/* Top accent */}
         <div
           style={{
-            height: '4px',
+            height: '3px',
             background: 'linear-gradient(90deg, #2563eb, #7c3aed)',
             borderRadius: '2px',
-            marginBottom: '2.5rem',
+            marginBottom: '0.85rem',
           }}
         />
 
@@ -79,7 +79,7 @@ export function Invoice({ innerData }: { innerData: any }) {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            marginBottom: '2.5rem',
+            marginBottom: '1rem',
           }}
         >
           <div>
@@ -88,10 +88,10 @@ export function Invoice({ innerData }: { innerData: any }) {
                 src={ImageObjectUrl}
                 alt="logo"
                 style={{
-                  maxWidth: '140px',
-                  maxHeight: '80px',
+                  maxWidth: '120px',
+                  maxHeight: '64px',
                   objectFit: 'contain',
-                  marginBottom: '0.5rem',
+                  marginBottom: '0.25rem',
                 }}
               />
             )}
@@ -99,12 +99,13 @@ export function Invoice({ innerData }: { innerData: any }) {
           <div style={{ textAlign: 'right' }}>
             <h1
               style={{
-                fontSize: '2.2rem',
+                fontSize: 'calc(1.65rem + 2px)',
                 fontWeight: 800,
                 color: '#2563eb',
                 margin: 0,
                 letterSpacing: '0.04em',
                 textTransform: 'uppercase',
+                lineHeight: 1.1,
               }}
             >
               Invoice
@@ -112,9 +113,9 @@ export function Invoice({ innerData }: { innerData: any }) {
             {invoiceNumber && (
               <p
                 style={{
-                  fontSize: '0.95rem',
+                  fontSize: 'calc(0.82rem + 1px)',
                   color: '#64748b',
-                  margin: '6px 0 0 0',
+                  margin: '4px 0 0 0',
                   fontWeight: 500,
                 }}
               >
@@ -129,12 +130,12 @@ export function Invoice({ innerData }: { innerData: any }) {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            gap: '2rem',
-            marginBottom: '2.5rem',
+            gap: '1.25rem',
+            marginBottom: '1rem',
           }}
         >
           {/* Left: From / Bill To / Ship To */}
-          <div style={{ display: 'flex', gap: '2.5rem', flexWrap: 'wrap', flex: 1 }}>
+          <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', flex: 1 }}>
             {fromAddress && (
               <div>
                 <p style={labelStyle}>From</p>
@@ -158,11 +159,11 @@ export function Invoice({ innerData }: { innerData: any }) {
           {/* Right: Dates */}
           <div style={{ textAlign: 'right', flexShrink: 0 }}>
             {date && (
-              <div style={{ marginBottom: '0.75rem' }}>
+              <div style={{ marginBottom: '0.4rem' }}>
                 <p style={{ ...labelStyle, textAlign: 'right' }}>Date</p>
                 <p
                   style={{
-                    fontSize: '0.9rem',
+                    fontSize: 'calc(0.8rem + 2px)',
                     color: '#334155',
                     fontWeight: 500,
                     margin: 0,
@@ -177,7 +178,7 @@ export function Invoice({ innerData }: { innerData: any }) {
                 <p style={{ ...labelStyle, textAlign: 'right' }}>Due Date</p>
                 <p
                   style={{
-                    fontSize: '0.9rem',
+                    fontSize: 'calc(0.8rem + 2px)',
                     color: '#334155',
                     fontWeight: 500,
                     margin: 0,
@@ -195,7 +196,7 @@ export function Invoice({ innerData }: { innerData: any }) {
           style={{
             height: '1px',
             backgroundColor: '#e2e8f0',
-            marginBottom: '1.5rem',
+            marginBottom: '0.65rem',
           }}
         />
 
@@ -204,17 +205,17 @@ export function Invoice({ innerData }: { innerData: any }) {
           style={{
             width: '100%',
             borderCollapse: 'collapse',
-            fontSize: '0.88rem',
+            fontSize: 'calc(0.8rem + 2px)',
           }}
         >
           <thead>
             <tr>
               <th
                 style={{
-                  padding: '0.8rem 1rem',
+                  padding: '0.4rem 0.55rem',
                   textAlign: 'left',
                   fontWeight: 700,
-                  fontSize: '0.72rem',
+                  fontSize: 'calc(0.65rem + 1px)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
                   color: '#ffffff',
@@ -226,10 +227,10 @@ export function Invoice({ innerData }: { innerData: any }) {
               </th>
               <th
                 style={{
-                  padding: '0.8rem 1rem',
+                  padding: '0.4rem 0.55rem',
                   textAlign: 'center',
                   fontWeight: 700,
-                  fontSize: '0.72rem',
+                  fontSize: 'calc(0.65rem + 1px)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
                   color: '#ffffff',
@@ -240,10 +241,10 @@ export function Invoice({ innerData }: { innerData: any }) {
               </th>
               <th
                 style={{
-                  padding: '0.8rem 1rem',
+                  padding: '0.4rem 0.55rem',
                   textAlign: 'right',
                   fontWeight: 700,
-                  fontSize: '0.72rem',
+                  fontSize: 'calc(0.65rem + 1px)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
                   color: '#ffffff',
@@ -254,10 +255,10 @@ export function Invoice({ innerData }: { innerData: any }) {
               </th>
               <th
                 style={{
-                  padding: '0.8rem 1rem',
+                  padding: '0.4rem 0.55rem',
                   textAlign: 'right',
                   fontWeight: 700,
-                  fontSize: '0.72rem',
+                  fontSize: 'calc(0.65rem + 1px)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
                   color: '#ffffff',
@@ -279,7 +280,7 @@ export function Invoice({ innerData }: { innerData: any }) {
               >
                 <td
                   style={{
-                    padding: '0.7rem 1rem',
+                    padding: '0.35rem 0.55rem',
                     textAlign: 'left',
                     color: '#334155',
                     borderBottom: '1px solid #e2e8f0',
@@ -289,7 +290,7 @@ export function Invoice({ innerData }: { innerData: any }) {
                 </td>
                 <td
                   style={{
-                    padding: '0.7rem 1rem',
+                    padding: '0.35rem 0.55rem',
                     textAlign: 'center',
                     color: '#475569',
                     borderBottom: '1px solid #e2e8f0',
@@ -299,7 +300,7 @@ export function Invoice({ innerData }: { innerData: any }) {
                 </td>
                 <td
                   style={{
-                    padding: '0.7rem 1rem',
+                    padding: '0.35rem 0.55rem',
                     textAlign: 'right',
                     color: '#475569',
                     borderBottom: '1px solid #e2e8f0',
@@ -310,7 +311,7 @@ export function Invoice({ innerData }: { innerData: any }) {
                 </td>
                 <td
                   style={{
-                    padding: '0.7rem 1rem',
+                    padding: '0.35rem 0.55rem',
                     textAlign: 'right',
                     color: '#1e293b',
                     fontWeight: 600,
@@ -330,16 +331,16 @@ export function Invoice({ innerData }: { innerData: any }) {
           style={{
             display: 'flex',
             justifyContent: 'flex-end',
-            marginTop: '1.5rem',
+            marginTop: '0.65rem',
           }}
         >
-          <div style={{ width: '280px' }}>
+          <div style={{ width: '260px' }}>
             <div
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                padding: '0.5rem 1rem',
-                fontSize: '0.88rem',
+                padding: '0.3rem 0.55rem',
+                fontSize: 'calc(0.8rem + 2px)',
                 color: '#64748b',
                 borderBottom: '1px solid #f1f5f9',
               }}
@@ -356,8 +357,8 @@ export function Invoice({ innerData }: { innerData: any }) {
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  padding: '0.5rem 1rem',
-                  fontSize: '0.88rem',
+                  padding: '0.3rem 0.55rem',
+                  fontSize: 'calc(0.8rem + 2px)',
                   color: '#059669',
                   borderBottom: '1px solid #f1f5f9',
                 }}
@@ -377,8 +378,8 @@ export function Invoice({ innerData }: { innerData: any }) {
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  padding: '0.5rem 1rem',
-                  fontSize: '0.88rem',
+                  padding: '0.3rem 0.55rem',
+                  fontSize: 'calc(0.8rem + 2px)',
                   color: '#64748b',
                   borderBottom: '1px solid #f1f5f9',
                 }}
@@ -395,8 +396,8 @@ export function Invoice({ innerData }: { innerData: any }) {
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  padding: '0.5rem 1rem',
-                  fontSize: '0.88rem',
+                  padding: '0.3rem 0.55rem',
+                  fontSize: 'calc(0.8rem + 2px)',
                   color: '#64748b',
                   borderBottom: '1px solid #f1f5f9',
                 }}
@@ -412,13 +413,13 @@ export function Invoice({ innerData }: { innerData: any }) {
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                padding: '0.85rem 1rem',
-                marginTop: '0.5rem',
+                padding: '0.45rem 0.65rem',
+                marginTop: '0.25rem',
                 backgroundColor: '#1e293b',
                 color: '#ffffff',
                 fontWeight: 700,
-                fontSize: '1.05rem',
-                borderRadius: '8px',
+                fontSize: 'calc(0.92rem + 2px)',
+                borderRadius: '6px',
               }}
             >
               <span>Total</span>
@@ -434,8 +435,8 @@ export function Invoice({ innerData }: { innerData: any }) {
         {note?.trim() ? (
           <div
             style={{
-              marginTop: '2rem',
-              paddingTop: '1.5rem',
+              marginTop: '0.85rem',
+              paddingTop: '0.65rem',
               borderTop: '1px solid #e2e8f0',
             }}
           >
@@ -447,8 +448,8 @@ export function Invoice({ innerData }: { innerData: any }) {
         {signatureObjectUrl ? (
           <div
             style={{
-              marginTop: note?.trim() ? '1.5rem' : '2rem',
-              paddingTop: note?.trim() ? 0 : '1.5rem',
+              marginTop: note?.trim() ? '0.65rem' : '0.85rem',
+              paddingTop: note?.trim() ? 0 : '0.65rem',
               borderTop: note?.trim() ? 'none' : '1px solid #e2e8f0',
             }}
           >
@@ -457,11 +458,11 @@ export function Invoice({ innerData }: { innerData: any }) {
               src={signatureObjectUrl}
               alt="Signature"
               style={{
-                maxWidth: '220px',
-                maxHeight: '100px',
+                maxWidth: '180px',
+                maxHeight: '72px',
                 objectFit: 'contain',
                 display: 'block',
-                marginTop: '8px',
+                marginTop: '4px',
               }}
             />
           </div>
@@ -470,18 +471,18 @@ export function Invoice({ innerData }: { innerData: any }) {
         {/* Footer */}
         <div
           style={{
-            marginTop: '3rem',
-            paddingTop: '1.5rem',
+            marginTop: '1rem',
+            paddingTop: '0.55rem',
             borderTop: '1px solid #e2e8f0',
             textAlign: 'center',
           }}
         >
           <p
             style={{
-              fontSize: '0.78rem',
+              fontSize: 'calc(0.72rem + 1px)',
               color: '#94a3b8',
               margin: 0,
-              lineHeight: 1.6,
+              lineHeight: 1.4,
             }}
           >
             Thank you for your business.
@@ -491,10 +492,10 @@ export function Invoice({ innerData }: { innerData: any }) {
         {/* Bottom accent */}
         <div
           style={{
-            height: '4px',
+            height: '3px',
             background: 'linear-gradient(90deg, #2563eb, #7c3aed)',
             borderRadius: '2px',
-            marginTop: '1.5rem',
+            marginTop: '0.55rem',
           }}
         />
       </div>

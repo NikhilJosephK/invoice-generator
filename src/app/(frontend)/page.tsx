@@ -3,7 +3,8 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { Invoice } from '@/app/components/invoice/invoice'
-import { CurrencyPicker } from '../components/currency-picker/currency-picker'
+import { CurrencyPicker } from '@/app/components/currency-picker/currency-picker'
+import { SignatureMaker } from '@/app/components/signature-maker/signature-maker'
 
 export default function InvoiceGeneratorPage() {
   const [preview, setPreview] = useState<string | null>(null)
@@ -29,6 +30,7 @@ export default function InvoiceGeneratorPage() {
     { id: 0, quantity: 0, rate: 0, amount: 0, product: '' },
   ])
   const [currencySymbol, setCurrencySymbol] = useState('')
+  const [pdfLoading, setPdfLoading] = useState(false)
 
   const [data, setData] = useState<any>({})
   useEffect(() => {
@@ -75,11 +77,17 @@ export default function InvoiceGeneratorPage() {
 
   async function printInvoice() {
     const invoiceHtml = document.getElementById('invoice')?.innerHTML
+    setPdfLoading(true)
     try {
       const response = await fetch('/api/pdf-generator', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ html: invoiceHtml || '' }),
+        body: JSON.stringify({
+          html: invoiceHtml || '',
+          ...(signatureObjectUrl?.startsWith('data:image')
+            ? { signatureDataUrl: signatureObjectUrl }
+            : {}),
+        }),
       })
       if (!response.ok) throw new Error('Failed to create PDF.')
       const blob = await response.blob()
@@ -90,8 +98,11 @@ export default function InvoiceGeneratorPage() {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+      URL.revokeObjectURL(objectUrl)
     } catch (err) {
-      throw err
+      console.error(err)
+    } finally {
+      setPdfLoading(false)
     }
   }
 
@@ -594,39 +605,31 @@ export default function InvoiceGeneratorPage() {
             {!signaturePreview ? (
               <button
                 type="button"
-                onClick={() =>
-                  (signatureUploadRef.current as unknown as HTMLInputElement)?.click()
-                }
+                onClick={() => (signatureUploadRef.current as unknown as HTMLInputElement)?.click()}
                 className="flex h-32 w-full items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50/50 text-slate-500 transition-colors hover:border-indigo-300 hover:bg-indigo-50/30 hover:text-indigo-600"
               >
                 <span className="text-sm font-medium">+ Upload signature</span>
               </button>
             ) : (
               <div className="relative inline-block max-w-full">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element -- blob and data URLs for signature */}
+                <img
                   src={signaturePreview}
                   id="signature-preview"
-                  width={220}
-                  height={100}
                   alt="Signature preview"
                   className="max-h-[100px] w-auto rounded-lg border border-slate-200 object-contain"
                 />
                 <button
                   type="button"
                   onClick={() => {
-                    if (signaturePreview) URL.revokeObjectURL(signaturePreview)
+                    if (signaturePreview.startsWith('blob:')) URL.revokeObjectURL(signaturePreview)
                     setSignaturePreview(null)
                     setSignatureObjectUrl(null)
                   }}
                   className="absolute -right-2 -top-2 rounded-full bg-slate-800 p-1 text-white shadow hover:bg-slate-700"
                   aria-label="Remove signature"
                 >
-                  <svg
-                    className="h-3 w-3"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
+                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -645,7 +648,7 @@ export default function InvoiceGeneratorPage() {
               onChange={(e) => {
                 const file = e.target.files?.[0]
                 if (!file) return
-                if (signaturePreview) URL.revokeObjectURL(signaturePreview)
+                if (signaturePreview?.startsWith('blob:')) URL.revokeObjectURL(signaturePreview)
                 setSignaturePreview(URL.createObjectURL(file))
                 const reader = new FileReader()
                 reader.onloadend = () => setSignatureObjectUrl(reader.result as string)
@@ -654,6 +657,23 @@ export default function InvoiceGeneratorPage() {
               }}
               className="sr-only"
             />
+
+            <div className="relative my-8">
+              <div className="absolute inset-0 flex items-center" aria-hidden>
+                <div className="w-full border-t border-slate-200" />
+              </div>
+              <div className="relative flex justify-center text-xs font-medium uppercase tracking-wider text-slate-400">
+                <span className="bg-white px-3">Or</span>
+              </div>
+            </div>
+
+            <SignatureMaker
+              onSignatureChange={(dataUrl) => {
+                if (signaturePreview?.startsWith('blob:')) URL.revokeObjectURL(signaturePreview)
+                setSignatureObjectUrl(dataUrl)
+                setSignaturePreview(dataUrl)
+              }}
+            />
           </div>
 
           {/* Submit / Download PDF button */}
@@ -661,22 +681,37 @@ export default function InvoiceGeneratorPage() {
             <button
               type="button"
               onClick={printInvoice}
-              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/40 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              disabled={pdfLoading}
+              aria-busy={pdfLoading}
+              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-indigo-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:bg-indigo-700 hover:shadow-indigo-500/40 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-90"
             >
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              Download PDF
+              {pdfLoading ? (
+                <>
+                  <span
+                    className="h-5 w-5 shrink-0 rounded-full border-2 border-white/35 border-t-white animate-spin"
+                    aria-hidden
+                  />
+                  <span>Generating PDF…</span>
+                </>
+              ) : (
+                <>
+                  <svg
+                    className="h-5 w-5 shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    aria-hidden
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  <span>Download PDF</span>
+                </>
+              )}
             </button>
             <p className="text-xs text-slate-500 max-lg:text-center">
               Generate a professional PDF invoice from your entered data
