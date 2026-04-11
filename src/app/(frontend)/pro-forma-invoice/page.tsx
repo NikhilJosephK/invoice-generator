@@ -6,7 +6,11 @@ import { Invoice } from '@/app/components/invoice/invoice'
 export default function ProFormaInvoicePage() {
   return (
     <>
-      <InvoiceGeneratorComponent InvoiceComponent={Invoice} invoiceType="Pro Forma" />
+      <InvoiceGeneratorComponent
+        InvoiceComponent={Invoice}
+        invoiceType="Pro Forma"
+        unit="Quantity"
+      />
     </>
   )
 }

@@ -6,7 +6,11 @@ import { InvoiceTwo } from '@/app/components/invoice/invoice-two'
 export default function FreelanceInvoicePage() {
   return (
     <>
-      <InvoiceGeneratorComponent InvoiceComponent={InvoiceTwo} invoiceType="Freelance" />
+      <InvoiceGeneratorComponent
+        InvoiceComponent={InvoiceTwo}
+        invoiceType="Freelance"
+        unit="Hours"
+      />
     </>
   )
 }

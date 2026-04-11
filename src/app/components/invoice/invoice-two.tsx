@@ -19,6 +19,7 @@ export function InvoiceTwo({ innerData }: { innerData?: any }) {
     totalDue,
     currencySymbol,
     note,
+    unit,
   } = innerData || {}
 
   const computedSubtotal =
@@ -144,7 +145,14 @@ export function InvoiceTwo({ innerData }: { innerData?: any }) {
                     </p>
                   )}
                   {dueDate && (
-                    <p style={{ fontSize: '0.78rem', color: accent, margin: '2px 0', fontWeight: 600 }}>
+                    <p
+                      style={{
+                        fontSize: '0.78rem',
+                        color: accent,
+                        margin: '2px 0',
+                        fontWeight: 600,
+                      }}
+                    >
                       <span style={{ color: dark }}>Due:</span> {dueDate}
                     </p>
                   )}
@@ -232,7 +240,7 @@ export function InvoiceTwo({ innerData }: { innerData?: any }) {
           >
             <thead>
               <tr>
-                {['Service / Item', 'Qty', 'Rate', 'Amount'].map((header, i) => (
+                {['Service / Item', unit, 'Rate', 'Amount'].map((header, i) => (
                   <th
                     key={header}
                     style={{
@@ -361,10 +369,9 @@ export function InvoiceTwo({ innerData }: { innerData?: any }) {
                   <span>Tax</span>
                   <span style={{ color: dark, fontWeight: 500 }}>
                     +{currencySymbol}
-                    {(isTaxPercentage && tax > 0
-                      ? (totalAfterDiscount * tax) / 100
-                      : tax
-                    ).toFixed(2)}
+                    {(isTaxPercentage && tax > 0 ? (totalAfterDiscount * tax) / 100 : tax).toFixed(
+                      2,
+                    )}
                   </span>
                 </div>
               )}

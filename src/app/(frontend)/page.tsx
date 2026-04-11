@@ -12,9 +12,18 @@ export default function HomePage() {
           backgroundSize: '48px 48px',
         }}
       />
-      <div className="pointer-events-none absolute -left-32 top-1/4 h-80 w-80 rounded-full bg-indigo-400/25 blur-3xl" aria-hidden />
-      <div className="pointer-events-none absolute -right-24 bottom-1/4 h-96 w-96 rounded-full bg-violet-400/20 blur-3xl" aria-hidden />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-[min(90%,42rem)] -translate-x-1/2 rounded-full bg-indigo-300/30 blur-3xl" aria-hidden />
+      <div
+        className="pointer-events-none absolute -left-32 top-1/4 h-80 w-80 rounded-full bg-indigo-400/25 blur-3xl"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -right-24 bottom-1/4 h-96 w-96 rounded-full bg-violet-400/20 blur-3xl"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute left-1/2 top-0 h-64 w-[min(90%,42rem)] -translate-x-1/2 rounded-full bg-indigo-300/30 blur-3xl"
+        aria-hidden
+      />
 
       <div className="relative flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-6 sm:py-14">
         <div className="mx-auto w-full max-w-3xl text-center">
@@ -25,7 +34,8 @@ export default function HomePage() {
             Professional invoices, free and fast
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-slate-600 sm:text-base">
-            Pick a template, fill in your details, and download a polished PDF. No account required.
+            Pick a template, fill in your details, and download a polished PDF.
+            <br aria-hidden="true" className="max-lg:hidden" /> No account required.
           </p>
         </div>
 
@@ -35,7 +45,13 @@ export default function HomePage() {
             className="group relative flex flex-col rounded-2xl border border-white/80 bg-white/70 p-6 shadow-[0_1px_0_rgb(255_255_255/0.9)_inset,0_12px_40px_-12px_rgb(99_102_241/0.35)] backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-indigo-200/90 hover:bg-white/90 hover:shadow-[0_1px_0_rgb(255_255_255/1)_inset,0_20px_50px_-12px_rgb(99_102_241/0.45)] sm:p-7"
           >
             <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/30">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -44,14 +60,27 @@ export default function HomePage() {
                 />
               </svg>
             </span>
-            <h2 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl">Pro forma invoice</h2>
+            <h2 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl">
+              Pro forma invoice
+            </h2>
             <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
               Classic layout with line items, totals, and terms—ideal for quotes and formal billing.
             </p>
             <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 transition group-hover:gap-2.5">
               Open builder
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </span>
           </Link>
@@ -61,7 +90,13 @@ export default function HomePage() {
             className="group relative flex flex-col rounded-2xl border border-white/80 bg-white/70 p-6 shadow-[0_1px_0_rgb(255_255_255/0.9)_inset,0_12px_40px_-12px_rgb(139_92_246/0.3)] backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-violet-200/90 hover:bg-white/90 hover:shadow-[0_1px_0_rgb(255_255_255/1)_inset,0_20px_50px_-12px_rgb(139_92_246/0.4)] sm:p-7"
           >
             <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-violet-500 to-fuchsia-600 text-white shadow-lg shadow-violet-500/30">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -70,14 +105,28 @@ export default function HomePage() {
                 />
               </svg>
             </span>
-            <h2 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl">Freelance invoice</h2>
+            <h2 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl">
+              Freelance invoice
+            </h2>
             <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-              A streamlined look for independent work—projects, hourly rates, and client-ready polish.
+              A streamlined look for independent work—projects, hourly rates, and client-ready
+              polish.
             </p>
             <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-violet-600 transition group-hover:gap-2.5">
               Open builder
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </span>
           </Link>

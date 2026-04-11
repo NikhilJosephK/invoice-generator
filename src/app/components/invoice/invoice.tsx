@@ -19,6 +19,7 @@ export function Invoice({ innerData }: { innerData?: any }) {
     totalDue,
     currencySymbol,
     note,
+    unit,
   } = innerData || {}
 
   const computedSubtotal =
@@ -238,7 +239,7 @@ export function Invoice({ innerData }: { innerData?: any }) {
                   backgroundColor: '#1e293b',
                 }}
               >
-                Qty
+                {unit}
               </th>
               <th
                 style={{

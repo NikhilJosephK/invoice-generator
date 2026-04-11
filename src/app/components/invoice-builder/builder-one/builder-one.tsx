@@ -9,6 +9,7 @@ import { SignatureMaker } from '@/app/components/signature-maker/signature-maker
 export default function InvoiceGeneratorComponent({
   InvoiceComponent = Invoice,
   invoiceType,
+  unit = 'Quantity',
 }: any) {
   const [preview, setPreview] = useState<string | null>(null)
   const [fromAddress, setFromAddress] = useState<string>('')
@@ -334,7 +335,7 @@ export default function InvoiceGeneratorComponent({
                 {/* Table header */}
                 <div className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-2 rounded-t-lg bg-slate-800 px-4 py-3 text-sm font-semibold text-white">
                   <div className="text-slate-200 min-w-[200px]">Product / Description</div>
-                  <div className="text-center text-slate-200 min-w-[100px]">Qty</div>
+                  <div className="text-center text-slate-200 min-w-[100px]">{unit}</div>
                   <div className="text-center text-slate-200 min-w-[100px]">Rate</div>
                   <div className="text-right text-slate-200 min-w-[100px]">Amount</div>
                   <div className="w-8" aria-hidden />
@@ -803,6 +804,7 @@ export default function InvoiceGeneratorComponent({
                   shipping,
                   totalDue: totalAfterShipping,
                   currencySymbol,
+                  unit: unit,
                 }}
               />
             </div>
